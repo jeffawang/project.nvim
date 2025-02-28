@@ -1,14 +1,14 @@
-local config = require("project_nvim.config")
+local config = require("projects_nvim.config")
 local uv = vim.loop
 local M = {}
 
 M.datapath = vim.fn.stdpath("data") -- directory
-M.projectpath = M.datapath .. "/project_nvim" -- directory
+M.projectpath = M.datapath .. "/projects_nvim" -- directory
 M.historyfile = M.projectpath .. "/project_history" -- file
 
 function M.init()
-  M.datapath = require("project_nvim.config").options.datapath
-  M.projectpath = M.datapath .. "/project_nvim" -- directory
+  M.datapath = require("projects_nvim.config").options.datapath
+  M.projectpath = M.datapath .. "/projects_nvim" -- directory
   M.historyfile = M.projectpath .. "/project_history" -- file
 end
 

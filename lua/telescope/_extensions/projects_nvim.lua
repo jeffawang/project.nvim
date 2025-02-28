@@ -1,10 +1,4 @@
--- Inspiration from:
--- https://github.com/nvim-telescope/telescope-project.nvim
-local has_telescope, telescope = pcall(require, "telescope")
-
-if not has_telescope then
-  return
-end
+local telescope = require("telescope")
 
 local finders = require("telescope.finders")
 local pickers = require("telescope.pickers")
@@ -13,11 +7,10 @@ local actions = require("telescope.actions")
 local state = require("telescope.actions.state")
 local builtin = require("telescope.builtin")
 local entry_display = require("telescope.pickers.entry_display")
-local utils = require("telescope.utils")
 
-local history = require("project_nvim.utils.history")
-local project = require("project_nvim.project")
-local config = require("project_nvim.config")
+local history = require("projects_nvim.utils.history")
+local project = require("projects_nvim.project")
+local p_config = require("projects_nvim.config")
 
 ----------
 -- Actions
@@ -79,7 +72,7 @@ end
 local function find_project_files(prompt_bufnr)
   local opt = {
     cwd = project.last_project,
-    hidden = config.options.show_hidden,
+    hidden = p_config.options.show_hidden,
     mode = "insert",
   }
   builtin.find_files(opt)
@@ -89,7 +82,7 @@ local function browse_project_files(prompt_bufnr)
   local project_path, cd_successful = change_working_directory(prompt_bufnr, true)
   local opt = {
     cwd = project_path,
-    hidden = config.options.show_hidden,
+    hidden = p_config.options.show_hidden,
   }
   if cd_successful then
     builtin.file_browser(opt)
@@ -100,7 +93,7 @@ local function search_in_project_files(prompt_bufnr)
   local project_path, cd_successful = change_working_directory(prompt_bufnr, true)
   local opt = {
     cwd = project_path,
-    hidden = config.options.show_hidden,
+    hidden = p_config.options.show_hidden,
     mode = "insert",
   }
   if cd_successful then
@@ -112,7 +105,7 @@ local function recent_project_files(prompt_bufnr)
   local _, cd_successful = change_working_directory(prompt_bufnr, true)
   local opt = {
     cwd_only = true,
-    hidden = config.options.show_hidden,
+    hidden = p_config.options.show_hidden,
   }
   if cd_successful then
     builtin.oldfiles(opt)
@@ -205,11 +198,14 @@ local function pwd_find_file(opts)
   })
 end
 
-return telescope.register_extension({
+local M = telescope.register_extension({
+  setup = p_config.setup,
   exports = {
-    projects = projects,
+    projects_nvim = projects,
     project_files = last_project_find_file,
     project_live_grep = last_project_live_grep,
     find_files = pwd_find_file,
   },
 })
+
+return M
