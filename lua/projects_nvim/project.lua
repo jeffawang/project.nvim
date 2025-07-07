@@ -69,6 +69,11 @@ function M.on_buf_enter()
   M.set_pwd(root, "git")
 end
 
+function M.file_project_root(filepath)
+  local root = vim.fs.root(filepath, config.options.patterns)
+  return root
+end
+
 function M.add_project_manually()
   local current_dir = vim.fn.expand("%:p:h", true)
   M.set_pwd(current_dir, "manual")
