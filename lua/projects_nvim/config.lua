@@ -38,7 +38,7 @@ M.options = {}
 M.setup = function(options)
   M.options = vim.tbl_deep_extend("force", M.defaults, options or {})
 
-  vim.opt.autochdir = false -- implicitly unset autochdir
+  -- vim.opt.autochdir = false -- implicitly unset autochdir
 
   require("projects_nvim.utils.path").init()
   require("projects_nvim.project").init()
